@@ -1,4 +1,4 @@
-//update from SAnwandter
+// Definir linhas e colunas, ver wiring.jpg para saber como ligar os cabos corretamente
 
 #define ROW_1 2
 #define ROW_2 3
@@ -20,6 +20,7 @@
 
 #define LF 0x0A
 #define frase_len 200
+// criar um buffer para a nossa frase
 char frase[frase_len];
 int last_char = 0;
 
@@ -31,7 +32,7 @@ const byte col[] = {
 };
 
 // The display buffer
-// It's prefilled with a smiling face (1 = ON, 0 = OFF)
+// Estes arrays especificam o estado de cada LED para fazer as letras.
 byte NONE[] = {B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,B00000000};
 byte ALL[] = {B11111111,B11111111,B11111111,B11111111,B11111111,B11111111,B11111111,B11111111};
 byte EX[] = {B00000000,B00010000,B00010000,B00010000,B00010000,B00000000,B00010000,B00000000};
@@ -83,7 +84,6 @@ void setup()
 
 void loop() {
   delay(5);
-  timeCount += 3;
   readSerial();
   delay(1000);
   drawMsg(frase);
@@ -222,7 +222,7 @@ void  drawScreen(byte buffer2[])
         digitalWrite(rows[i], HIGH);    //initiate whole row
         for (byte a = 0; a < 8; a++)    // count next row
         {
-          // if You set (~buffer2[i] >> a) then You will have positive
+          // if You set (~buffer2[i] >> a) then You will have positive, remove ~ for negative
           digitalWrite(col[a], (~buffer2[i] >> a) & 0x01); // initiate whole column
           
           delayMicroseconds(100);       // uncoment deley for diferent speed of display
@@ -236,14 +236,3 @@ void  drawScreen(byte buffer2[])
         // otherwise last row will intersect with next row
     }
 }
-// 
-  /* this is siplest resemplation how for loop is working with each row.
-    digitalWrite(COL_1, (~b >> 0) & 0x01); // Get the 1st bit: 10000000
-    digitalWrite(COL_2, (~b >> 1) & 0x01); // Get the 2nd bit: 01000000
-    digitalWrite(COL_3, (~b >> 2) & 0x01); // Get the 3rd bit: 00100000
-    digitalWrite(COL_4, (~b >> 3) & 0x01); // Get the 4th bit: 00010000
-    digitalWrite(COL_5, (~b >> 4) & 0x01); // Get the 5th bit: 00001000
-    digitalWrite(COL_6, (~b >> 5) & 0x01); // Get the 6th bit: 00000100
-    digitalWrite(COL_7, (~b >> 6) & 0x01); // Get the 7th bit: 00000010
-    digitalWrite(COL_8, (~b >> 7) & 0x01); // Get the 8th bit: 00000001
-}*/
